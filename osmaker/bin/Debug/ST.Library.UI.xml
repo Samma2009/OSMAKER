@@ -1,0 +1,2125 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ST.Library.UI</name>
+    </assembly>
+    <members>
+        <member name="T:ST.Library.UI.NodeEditor.STNodePropertyAttribute">
+            <summary>
+            STNode节点属性特性
+            用于描述STNode节点属性信息 以及在属性编辑器上的行为
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyAttribute.#ctor(System.String,System.String)">
+            <summary>
+            构造一个STNode属性特性
+            </summary>
+            <param name="strKey">需要显示的名称</param>
+            <param name="strDesc">需要显示的描述信息</param>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyAttribute.Name">
+            <summary>
+            获取属性需要在属性编辑器上显示的名称
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyAttribute.Description">
+            <summary>
+            获取属性需要在属性编辑器上显示的描述
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyAttribute.DescriptorType">
+            <summary>
+            获取属性描述器类型
+            </summary>
+        </member>
+        <member name="T:ST.Library.UI.NodeEditor.STNodePropertyDescriptor">
+            <summary>
+            STNode属性描述器
+            用于确定在属性编辑器上如何与属性的值进行交互 以及确定属性值在属性编辑器上将如何绘制并交互
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.#ctor">
+            <summary>
+            构造一个描述器
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnSetItemLocation">
+            <summary>
+            当确定STNode属性在属性编辑器上的位置时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.GetValueFromString(System.String)">
+            <summary>
+            将字符串形式的属性值转换为属性目标类型的值
+            默认只支持 int float double string bool 以及上述类型的Array
+            若目标类型不在上述中 请重写此函数自行转换
+            </summary>
+            <param name="strText">字符串形式的属性值</param>
+            <returns>属性真实目标类型的值</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.GetStringFromValue">
+            <summary>
+            将属性目标类型的值转换为字符串形式的值
+            默认对类型值进行 ToString() 操作
+            如需特殊处理 请重写此函数自行转换
+            </summary>
+            <returns>属性值的字符串形式</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.GetValueFromBytes(System.Byte[])">
+            <summary>
+            将二进制形式的属性值转换为属性目标类型的值 用于从文件存储中的数据还原属性值
+            默认将其转换为字符串然后调用 GetValueFromString(string)
+            此函数与 GetBytesFromValue() 相对应 若需要重写函数应当两个函数一起重写
+            </summary>
+            <param name="byData">二进制数据</param>
+            <returns>属性真实目标类型的值</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.GetBytesFromValue">
+            <summary>
+            将属性目标类型的值转换为二进制形式的值 用于文件存储时候调用
+            默认调用 GetStringFromValue() 然后将字符串转换为二进制数据
+            如需特殊处理 请重写此函数自行转换 并且重写 GetValueFromBytes()
+            </summary>
+            <returns>属性值的二进制形式</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.GetValue(System.Object[])">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.GetValue()
+            </summary>
+            <param name="index">索引属性的可选索引值 对于非索引属性 此值应为null</param>
+            <returns>属性值</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.SetValue(System.Object)">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.SetValue()
+            </summary>
+            <param name="value">需要设置的属性值</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.SetValue(System.String)">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.SetValue()
+            在调用之前会默认进行 GetValueFromString(strValue) 处理
+            </summary>
+            <param name="strValue">需要设置的属性字符串形式的值</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.SetValue(System.Byte[])">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.SetValue()
+            在调用之前会默认进行 GetValueFromBytes(byte[]) 处理
+            </summary>
+            <param name="byData">需要设置的属性二进制数据</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.SetValue(System.Object,System.Object[])">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.SetValue()
+            </summary>
+            <param name="value">需要设置的属性值</param>
+            <param name="index">索引属性的可选索引值 对于非索引属性 此值应为null</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.SetValue(System.String,System.Object[])">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.SetValue()
+            在调用之前会默认进行 GetValueFromString(strValue) 处理
+            </summary>
+            <param name="strValue">需要设置的属性字符串形式的值</param>
+            <param name="index">索引属性的可选索引值 对于非索引属性 此值应为null</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.SetValue(System.Byte[],System.Object[])">
+            <summary>
+            此函数对应 System.Reflection.PropertyInfo.SetValue()
+            在调用之前会默认进行 GetValueFromBytes(byte[]) 处理
+            </summary>
+            <param name="byData">需要设置的属性二进制数据</param>
+            <param name="index">索引属性的可选索引值 对于非索引属性 此值应为null</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnSetValueError(System.Exception)">
+            <summary>
+            当设置属性值发生错误时候发生
+            </summary>
+            <param name="ex">异常信息</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnDrawValueRectangle(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当绘制属性在属性编辑器上的值所在区域时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnMouseEnter(System.EventArgs)">
+            <summary>
+            当鼠标进入属性值所在区域时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在属性值所在区域点击时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在属性值所在区域移动时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在属性值所在区域抬起时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnMouseLeave(System.EventArgs)">
+            <summary>
+            当鼠标在属性值所在区域离开时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.OnMouseClick(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在属性值所在区域点击时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.Invalidate">
+            <summary>
+            重绘选项区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.Node">
+            <summary>
+            获取目标节点
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.Control">
+            <summary>
+            获取所属的节点属性编辑器控件
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.Rectangle">
+            <summary>
+            获取选项所在区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.RectangleL">
+            <summary>
+            获取选项名称所在区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.RectangleR">
+            <summary>
+            获取选项值所在区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.Name">
+            <summary>
+            获取选项需要显示的名称
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.Description">
+            <summary>
+            获取属性对应的描述信息
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyDescriptor.PropertyInfo">
+            <summary>
+            获取属性信息
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditorPannel.AddSTNode(System.Type)">
+            <summary>
+            向树控件中添加一个STNode
+            </summary>
+            <param name="stNodeType">STNode类型</param>
+            <returns>是否添加成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditorPannel.LoadAssembly(System.String)">
+            <summary>
+            从程序集中加载STNode
+            </summary>
+            <param name="strFileName">程序集路径</param>
+            <returns>添加成功个数</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditorPannel.SetConnectionStatusText(ST.Library.UI.NodeEditor.ConnectionStatus,System.String)">
+            <summary>
+            设置编辑器显示连接状态的文本
+            </summary>
+            <param name="status">连接状态</param>
+            <param name="strText">对应显示文本</param>
+            <returns>旧文本</returns>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.LeftLayout">
+            <summary>
+            获取或设置是否是左边布局
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.SplitLineColor">
+            <summary>
+            获取或这是分割线颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.HandleLineColor">
+            <summary>
+            获取或设置分割线手柄颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.ShowScale">
+            <summary>
+            获取或设置编辑器缩放时候显示比例
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.ShowConnectionStatus">
+            <summary>
+            获取或设置节点连线时候是否显示状态
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.X">
+            <summary>
+            获取或设置分割线水平宽度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.Y">
+            <summary>
+            获取或设置分割线垂直高度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.Editor">
+            <summary>
+            获取面板中的STNodeEditor
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.TreeView">
+            <summary>
+            获取面板中的STNodeTreeView
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorPannel.PropertyGrid">
+            <summary>
+            获取面板中的STNodePropertyGrid
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.NoOwner">
+            <summary>
+            不存在所有者
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.SameOwner">
+            <summary>
+            相同的所有者
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.SameInputOrOutput">
+            <summary>
+            均为输入或者输出选项
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.ErrorType">
+            <summary>
+            不同的数据类型
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.SingleOption">
+            <summary>
+            单连接节点
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.Loop">
+            <summary>
+            出现环形路径
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.Exists">
+            <summary>
+            已存在的连接
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.EmptyOption">
+            <summary>
+            空白选项
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.Connected">
+            <summary>
+            已经连接
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.DisConnected">
+            <summary>
+            连接被断开
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.Locked">
+            <summary>
+            节点被锁定
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.Reject">
+            <summary>
+            操作被拒绝
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.Connecting">
+            <summary>
+            正在被连接
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.ConnectionStatus.DisConnecting">
+            <summary>
+            正在断开连接
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOptionEventArgs.TargetOption">
+            <summary>
+            触发此事件的对应Option
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOptionEventArgs.Status">
+            <summary>
+            Option之间的连线状态
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOptionEventArgs.IsSponsor">
+            <summary>
+            是否为此次行为的发起者
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorOptionEventArgs.CurrentOption">
+            <summary>
+            主动触发事件的Option
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditorOptionEventArgs.Continue">
+            <summary>
+            是否继续向下操作 用于Begin(Connecting/DisConnecting)是否继续向后操作
+            </summary>
+        </member>
+        <member name="T:ST.Library.UI.NodeEditor.STNodePropertyGrid">
+            <summary>
+            STNode节点属性编辑器
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_rect_link">
+            <summary>
+            作者链接地址区域
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_rect_help">
+            <summary>
+            查看帮助按钮区域
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_rect_title">
+            <summary>
+            编辑器标题区域
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_rect_switch">
+            <summary>
+            面板切换按钮区域
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nOffsetY">
+            <summary>
+            控件在绘制过程中使用的垂直滚动偏移
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nInfoOffsetY">
+            <summary>
+            保存的信息面板垂直滚动偏移
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nPropertyOffsetY">
+            <summary>
+            保存的属性面板垂直滚动偏移
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nVHeight">
+            <summary>
+            控件在绘制过程中使用的绘图区域总高度
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nInfoVHeight">
+            <summary>
+            保存的信息面板需要的总高度
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nPropertyVHeight">
+            <summary>
+            保存的属性面板需要的总高度
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodePropertyGrid.m_nInfoLeft">
+            <summary>
+            信息面板中Key显示需要的水平宽度
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.#ctor">
+            <summary>
+            构造一个节点属性编辑器
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            当控件重绘时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在控件上移动时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在控件上点下时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在控件上抬起时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnMouseLeave(System.EventArgs)">
+            <summary>
+            当鼠标离开控件时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnMouseWheel(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当鼠标在控件上滚动滚轮时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnResize(System.EventArgs)">
+            <summary>
+            当控件尺寸发生改变时候发生
+            </summary>
+            <param name="e">事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnDrawPropertyItem(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodePropertyDescriptor,System.Int32)">
+            <summary>
+            当绘制属性选项时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="item">目标属性选项描述器</param>
+            <param name="nIndex">选项所在索引</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnDrawTitle(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            绘制属性窗口标题
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnDrawDescription(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当需要绘制属性描述信息时发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnDrawErrorInfo(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当需要绘制错误信息时发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnDrawInfo(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当绘制节点信息时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnProcessPropertyMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当在属性面板鼠标点下时候发生
+            </summary>
+            <param name="e">鼠标事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnProcessInfoMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当在信息面板鼠标点下时候发生
+            </summary>
+            <param name="e">鼠标事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnProcessPropertyMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当在属性面板鼠标移动时候发生
+            </summary>
+            <param name="e">鼠标事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.OnProcessHelpMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            当在信息面板鼠标移动时候发生
+            </summary>
+            <param name="e">鼠标事件参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.SetNode(ST.Library.UI.NodeEditor.STNode)">
+            <summary>
+            设置需要显示的STNode节点
+            </summary>
+            <param name="node">目标节点</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.SetInfoKey(System.String,System.String,System.String,System.String)">
+            <summary>
+            设置信息页面Key的显示文本
+            </summary>
+            <param name="strAuthor">作者</param>
+            <param name="strMail">邮箱</param>
+            <param name="strLink">连接</param>
+            <param name="strHelp">查看帮助</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodePropertyGrid.SetErrorMessage(System.String)">
+            <summary>
+            设置要显示的错误信息
+            </summary>
+            <param name="strText">错误信息</param>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.STNode">
+            <summary>
+            当前显示的STNode
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ItemHoverColor">
+            <summary>
+            获取或设置属性选项被鼠标悬停时候背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ItemSelectedColor">
+            <summary>
+            获取或设置属性选项被选中时候背景色 当AutoColor被设置时此属性不能被设置
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ItemValueBackColor">
+            <summary>
+            获取或设置属性选项值背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.TitleColor">
+            <summary>
+            获取或设置默认标题背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ErrorColor">
+            <summary>
+            获取或设置属性设置错误时候提示信息背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.DescriptionColor">
+            <summary>
+            获取或设置属性描述信息背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ShowTitle">
+            <summary>
+            获取或设置是否显示节点标题
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.AutoColor">
+            <summary>
+            获取或设置是否根据STNode自动设置控件高亮颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.InfoFirstOnDraw">
+            <summary>
+            获取或当节点被设置时候 是否优先绘制信息面板
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ReadOnlyModel">
+            <summary>
+            获取或设置当前属性编辑器是否处于只读模式
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodePropertyGrid.ScrollOffset">
+            <summary>
+            获取当前滚动条高度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeControlPaintEventArgs.DrawingTools">
+            <summary>
+            绘制工具
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeControlCollection.EnsureSpace(System.Int32)">
+            <summary>
+            确认空间是否足够 空间不足扩大容量
+            </summary>
+            <param name="elements">需要增加的个数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.#ctor">
+            <summary>
+            构造一个STNode树控件
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.OnDrawSearch(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当绘制检索文本区域时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.OnStartDrawItem(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection,System.Int32,System.Int32)">
+            <summary>
+            当开始绘制树节点的每一个节点时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="Items">当前需要绘制的集合</param>
+            <param name="nCounter">已经绘制个数的计数器</param>
+            <param name="nLevel">当前位于第几级子集合</param>
+            <returns>已经绘制个数</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.OnDrawItem(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection,System.Int32,System.Int32)">
+            <summary>
+            当绘制树节点每一个节点时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="items">当前需要绘制的集合</param>
+            <param name="nCounter">已经绘制个数的计数器</param>
+            <param name="nLevel">当前位于第几级子集合</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.OnDrawSwitch(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection)">
+            <summary>
+            当绘制树节点展开与关闭开关时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="items">当前需要绘制的集合</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.OnDrawItemText(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection,System.Drawing.Rectangle)">
+            <summary>
+            当绘制树节点的文本时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="items">当前需要绘制的集合</param>
+            <param name="rect">文本域所在矩形区域</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.OnDrawItemIcon(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection,System.Drawing.Rectangle)">
+            <summary>
+            当绘制树节点图标时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="items">当前需要绘制的集合</param>
+            <param name="rect">文本域所在矩形区域</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.Search(System.String)">
+            <summary>
+            在控件中检索STNode
+            </summary>
+            <param name="strText">需要检索的文本</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.AddNode(System.Type)">
+            <summary>
+            向控件中添加一个STNode类型
+            </summary>
+            <param name="stNodeType">STNode类型</param>
+            <returns>是否添加成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.LoadAssembly(System.String)">
+            <summary>
+            从文件中向控件添加STNode类型
+            </summary>
+            <param name="strFile">指定文件路径</param>
+            <returns>添加成功个数</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.Clear">
+            <summary>
+            清空控件中所有STNode类型
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.RemoveNode(System.Type)">
+            <summary>
+            向控件中移除一个STNode类型
+            </summary>
+            <param name="stNodeType">STNode类型</param>
+            <returns>是否移除成功</returns>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.ItemBackColor">
+            <summary>
+            获取或设置每行属性选项背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.ItemHoverColor">
+            <summary>
+            获取或设置属性选项被鼠标悬停时候背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.TitleColor">
+            <summary>
+            获取或设置顶部检索区域背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.TextBoxColor">
+            <summary>
+            获取或设置检索文本框的背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.HightLightTextColor">
+            <summary>
+            获取或设置检索时候高亮文本颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.InfoButtonColor">
+            <summary>
+            获取或设置信息显示按钮颜色 若设置AutoColor无法设置此属性值
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.FolderCountColor">
+            <summary>
+            获取或设置统计个数的文本颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.ShowFolderCount">
+            <summary>
+            获取或设置是否统计STNode的个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.ShowInfoButton">
+            <summary>
+            获取或设置是否显示信息按钮
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.InfoPanelIsLeftLayout">
+            <summary>
+            获取或设置预览窗口是否是向左布局
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.AutoColor">
+            <summary>
+            获取或设置控件中部分颜色来之对应的STNode的标题颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.Editor">
+            <summary>
+            获取节点预览时候使用的STNodeEditor
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.PropertyGrid">
+            <summary>
+            获取节点预览时候使用的STNodePropertyGrid
+            </summary>
+        </member>
+        <member name="T:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection">
+            <summary>
+            STNodeTreeView控件中每一项的集合
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.#ctor(System.String)">
+            <summary>
+            构造一颗树节点集合
+            </summary>
+            <param name="strName">当前树节点在控件中的显示名称</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Add(System.String)">
+            <summary>
+            向当前树节点中添加一个子节点
+            </summary>
+            <param name="strName">节点显示名称</param>
+            <returns>添加后的子节点集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Remove(System.String,System.Boolean)">
+            <summary>
+            向当前树节点中删除一个子集合
+            </summary>
+            <param name="strName">子集合名称</param>
+            <param name="isAutoDelFolder">是否递归向上自动清空无用节点</param>
+            <returns>是否删除成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Clear">
+            <summary>
+            清空当前树节点中所有子节点
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.GetKeys">
+            <summary>
+            获取当前树节点中所有的名称数组
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Copy">
+            <summary>
+            拷贝当前树节点集合中所有数据
+            </summary>
+            <returns>拷贝的副本</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.GetEnumerator">
+            <summary>
+            返回 System.Collections.IEnumerator 的 Array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Name">
+            <summary>
+            获取当前树节点显示名称
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.NameLower">
+            <summary>
+            获取当前树节点显示名称的小写字符串
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.STNodeType">
+            <summary>
+            获取当前树节点对应的STNode类型
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Parent">
+            <summary>
+            获取当前树节点的父级树节点
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.STNodeCount">
+            <summary>
+            获取当前树节点下拥有的STNode类型个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Path">
+            <summary>
+            获取当前树节点对应STNode类型在树控件中对应路径
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.IsOpen">
+            <summary>
+            获取当前或设置树节点是否为打开状态
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.IsLibraryRoot">
+            <summary>
+            获取当前树节点是否为加载模块的根路劲节点
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.DisplayRectangle">
+            <summary>
+            获取当前树节点在控件中的显示区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.SwitchRectangle">
+            <summary>
+            获取当前树节点在控件中的开关按钮区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.InfoRectangle">
+            <summary>
+            获取当前树节点在控件中的信息按钮区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.STNodeTypeColor">
+            <summary>
+            获取当前树节点对应STNode类型的标题颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Count">
+            <summary>
+            获取当前树节点所包含子节点个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeTreeView.STNodeTreeCollection.Item(System.String)">
+            <summary>
+            获取或设置指定名称的集合
+            </summary>
+            <param name="strKey">指定名称</param>
+            <returns>集合</returns>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeOption.m_hs_connected">
+            <summary>
+            保存已经被连接的点
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.#ctor(System.String,System.Type,System.Boolean)">
+            <summary>
+            构造一个 Option
+            </summary>
+            <param name="strText">显示文本</param>
+            <param name="dataType">数据类型</param>
+            <param name="bSingle">是否为单连接</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.Invalidate">
+            <summary>
+            重绘整个控件
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.ConnectingOption(ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            当前 Option 开始连接目标 Option
+            </summary>
+            <param name="op">需要连接的 Option</param>
+            <returns>是否允许继续操作</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.DisConnectingOption(ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            当前 Option 开始断开目标 Option
+            </summary>
+            <param name="op">需要断开的 Option</param>
+            <returns>是否允许继续操作</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.ConnectOption(ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            当前 Option 连接目标 Option
+            </summary>
+            <param name="op">需要连接的 Option</param>
+            <returns>连接结果</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.CanConnect(ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            检测当前 Option 是否可以连接目标 Option
+            </summary>
+            <param name="op">需要连接的 Option</param>
+            <returns>检测结果</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.DisConnectOption(ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            当前 Option 断开目标 Option
+            </summary>
+            <param name="op">需要断开的 Option</param>
+            <returns></returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.DisConnectionAll">
+            <summary>
+            断开当前 Option 的所有连接
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.GetConnectedOption">
+            <summary>
+            获取当前 Option 所连接的 Option 集合
+            </summary>
+            <returns>如果为null 则表示不存在所有者 否则返回集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.TransferData">
+            <summary>
+            向当前 Option 所连接的所有 Option 投递数据
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.TransferData(System.Object)">
+            <summary>
+            向当前 Option 所连接的所有 Option 投递数据
+            </summary>
+            <param name="data">需要投递的数据</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOption.TransferData(System.Object,System.Boolean)">
+            <summary>
+            向当前 Option 所连接的所有 Option 投递数据
+            </summary>
+            <param name="data">需要投递的数据</param>
+            <param name="bDisposeOld">是否释放旧数据</param>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.Owner">
+            <summary>
+            获取当前 Option 所属的 Node
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.IsSingle">
+            <summary>
+            获取当前 Option 是否仅能被连接一次
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.IsInput">
+            <summary>
+            获取当前 Option 是否是输入选项
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.TextColor">
+            <summary>
+            获取或设置当前 Option 文本颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.DotColor">
+            <summary>
+            获取或设置当前 Option 连接点的颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.Text">
+            <summary>
+            获取或设置当前 Option 显示文本
+            当AutoSize被设置时 无法修改此属性
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.DotLeft">
+            <summary>
+            获取当前 Option 连接点的左边坐标
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.DotTop">
+            <summary>
+            获取当前 Option 连接点的上边坐标
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.DotSize">
+            <summary>
+            获取当前 Option 连接点的宽度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.TextRectangle">
+            <summary>
+            获取当前 Option 文本区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.Data">
+            <summary>
+            获取或者设置当前 Option 所包含的数据
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.DataType">
+            <summary>
+            获取当前 Option 数据类型
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.DotRectangle">
+            <summary>
+            获取当前 Option 连接点的区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.ConnectionCount">
+            <summary>
+            获取当前 Option 被连接的个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeOption.ConnectedOption">
+            <summary>
+            获取当前 Option 所连接的 Option 集合
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeOption.Connected">
+            <summary>
+            当被连接时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeOption.Connecting">
+            <summary>
+            当连接开始发生时发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeOption.DisConnected">
+            <summary>
+            当连接断开时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeOption.DisConnecting">
+            <summary>
+            当连接开始断开时发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeOption.DataTransfer">
+            <summary>
+            当有数据传递时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeOptionCollection.EnsureSpace(System.Int32)">
+            <summary>
+            确认空间是否足够 空间不足扩大容量
+            </summary>
+            <param name="elements">需要增加的个数</param>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNode.m_ctrl_active">
+            <summary>
+            当前Node中 活动的控件
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNode.m_ctrl_hover">
+            <summary>
+            当前Node中 悬停的控件
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNode.m_ctrl_down">
+            <summary>
+            当前Node中 鼠标点下的控件
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnCreate">
+            <summary>
+            当Node被构造时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnDrawNode(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            绘制整个Node
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnDrawTitle(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            绘制Node标题部分
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnDrawBody(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            绘制Node主体部分 除去标题部分
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnDrawMark(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            绘制标记信息
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnDrawOptionDot(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            绘制选项连线的点
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="op">指定的选项</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnDrawOptionText(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeOption)">
+            <summary>
+            绘制选项的文本
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="op">指定的选项</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnSetOptionDotLocation(ST.Library.UI.NodeEditor.STNodeOption,System.Drawing.Point,System.Int32)">
+            <summary>
+            当计算Option连线点位置时候发生
+            </summary>
+            <param name="op">需要计算的Option</param>
+            <param name="pt">自动计算出的位置</param>
+            <param name="nIndex">当前Option的索引</param>
+            <returns>新的位置</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnSetOptionTextRectangle(ST.Library.UI.NodeEditor.STNodeOption,System.Drawing.Rectangle,System.Int32)">
+            <summary>
+            当计算Option文本区域时候发生
+            </summary>
+            <param name="op">需要计算的Option</param>
+            <param name="rect">自动计算出的区域</param>
+            <param name="nIndex">当前Option的索引</param>
+            <returns>新的区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.GetDefaultNodeSize(System.Drawing.Graphics)">
+            <summary>
+            获取当前STNode所需要的默认大小
+            返回的大小并不会限制绘制区域 任然可以在此区域之外绘制
+            但是并不会被STNodeEditor所接受 并触发对应事件
+            </summary>
+            <param name="g">绘图面板</param>
+            <returns>计算出来的大小</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnBuildMarkRectangle(System.Drawing.Graphics)">
+            <summary>
+            计算当前Mark所需要的矩形区域
+            返回的大小并不会限制绘制区域 任然可以在此区域之外绘制
+            但是并不会被STNodeEditor所接受 并触发对应事件
+            </summary>
+            <param name="g">绘图面板</param>
+            <returns>计算后的区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnSaveNode(System.Collections.Generic.Dictionary{System.String,System.Byte[]})">
+            <summary>
+            当需要保存时候 此Node有哪些需要额外保存的数据
+            注意: 保存时并不会进行序列化 还原时候仅重新通过空参数构造器创建此Node
+                  然后调用 OnLoadNode() 将保存的数据进行还原
+            </summary>
+            <param name="dic">需要保存的数据</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnLoadNode(System.Collections.Generic.Dictionary{System.String,System.Byte[]})">
+            <summary>
+            当还原该节点时候会将 OnSaveNode() 所返回的数据重新传入此函数
+            </summary>
+            <param name="dic">保存时候的数据</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnEditorLoadCompleted">
+            <summary>
+            当编辑器加载完成所有的节点时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.SetOptionText(ST.Library.UI.NodeEditor.STNodeOption,System.String)">
+            <summary>
+            设置Option的文本信息
+            </summary>
+            <param name="op">目标Option</param>
+            <param name="strText">文本</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.SetOptionTextColor(ST.Library.UI.NodeEditor.STNodeOption,System.Drawing.Color)">
+            <summary>
+            设置Option文本信息颜色
+            </summary>
+            <param name="op">目标Option</param>
+            <param name="clr">颜色</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.SetOptionDotColor(ST.Library.UI.NodeEditor.STNodeOption,System.Drawing.Color)">
+            <summary>
+            设置Option连线点颜色
+            </summary>
+            <param name="op">目标Option</param>
+            <param name="clr">颜色</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnOwnerChanged">
+            <summary>
+            当所有者发生改变时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnSelectedChanged">
+            <summary>
+            当选中状态改变时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.OnActiveChanged">
+            <summary>
+            当活动状态改变时候发生
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.SetOptionsLocation">
+            <summary>
+            计算每个Option的位置
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.Invalidate">
+            <summary>
+            重绘Node
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.Invalidate(System.Drawing.Rectangle)">
+            <summary>
+            重绘 Node 指定区域
+            </summary>
+            <param name="rect">Node 指定区域</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.GetInputOptions">
+            <summary>
+            获取此Node所包含的输入Option集合
+            </summary>
+            <returns>Option集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.GetOutputOptions">
+            <summary>
+            获取此Node所包含的输出Option集合
+            </summary>
+            <returns>Option集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNode.SetSelected(System.Boolean,System.Boolean)">
+            <summary>
+            设置Node的选中状态
+            </summary>
+            <param name="bSelected">是否选中</param>
+            <param name="bRedraw">是否重绘</param>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Owner">
+            <summary>
+            获取当前 Node 所有者
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.IsSelected">
+            <summary>
+            获取或设置 Node 是否处于被选中状态
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.IsActive">
+            <summary>
+            获取 Node 是否处于活动状态
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.TitleColor">
+            <summary>
+            获取或设置标题背景颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.MarkColor">
+            <summary>
+            获取或设置标记信息背景颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.ForeColor">
+            <summary>
+            获取或设置当前 Node 前景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.BackColor">
+            <summary>
+            获取或设置当前 Node 背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Title">
+            <summary>
+            获取或设置 Node 标题
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Mark">
+            <summary>
+            获取或设置 Node 标记信息
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.MarkLines">
+            <summary>
+            获取 Node 标记信息行数据
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Left">
+            <summary>
+            获取或设置 Node 左边坐标
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Top">
+            <summary>
+            获取或设置 Node 上边坐标
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Width">
+            <summary>
+            获取或设置 Node 宽度 当AutoSize被设置时 无法设置此值
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Height">
+            <summary>
+            获取或设置 Node 高度 当AutoSize被设置时 无法设置此值
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.ItemHeight">
+            <summary>
+            获取或设置 Node 每个选项的高度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.AutoSize">
+            <summary>
+            获取或设置 Node 是否自动计算宽高
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Right">
+            <summary>
+            获取 Node 右边边坐标
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Bottom">
+            <summary>
+            获取 Node 下边坐标
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Rectangle">
+            <summary>
+            获取 Node 矩形区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.TitleRectangle">
+            <summary>
+            获取 Node 标题矩形区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.MarkRectangle">
+            <summary>
+            获取 Node 标记矩形区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.TitleHeight">
+            <summary>
+            获取或设置 Node 标题高度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.InputOptions">
+            <summary>
+            获取输入选项集合
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.InputOptionsCount">
+            <summary>
+            获取输入选项集合个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.OutputOptions">
+            <summary>
+            获取输出选项
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.OutputOptionsCount">
+            <summary>
+            获取输出选项个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Controls">
+            <summary>
+            获取 Node 所包含的控件集合
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.ControlsCount">
+            <summary>
+            获取 Node 所包含的控件集合个数
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Location">
+            <summary>
+            获取 Node 坐标位置
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Size">
+            <summary>
+            获取 Node 大小
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Font">
+            <summary>
+            获取或设置 Node 字体
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.LockOption">
+            <summary>
+            获取或设置是否锁定Option选项 锁定后不在接受连接
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.LockLocation">
+            <summary>
+            获取或设置是否锁定Node位置 锁定后不可移动
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.ContextMenuStrip">
+            <summary>
+            获取或设置当前Node 上下文菜单
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Tag">
+            <summary>
+            获取或设置用户自定义保存的数据
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.Guid">
+            <summary>
+            获取全局唯一标识
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNode.LetGetOptions">
+            <summary>
+            获取或设置是否允许外部访问STNodeOption
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_pt_in_control">
+            <summary>
+            当前鼠标在控件中的实时位置
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_pt_in_canvas">
+            <summary>
+            当前鼠标在画布中的实时位置
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_pt_down_in_control">
+            <summary>
+            鼠标点击时在控件上的位置
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_pt_down_in_canvas">
+            <summary>
+            鼠标点击时在画布中的位置
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_pt_canvas_old">
+            <summary>
+            用于鼠标点击移动画布时候 鼠标点下时候的画布坐标位置
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_pt_dot_down">
+            <summary>
+            用于保存连线过程中保存点下 Option 的起点坐标
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_option_down">
+            <summary>
+            用于保存连线过程中鼠标点下的起点Option 当MouseUP时候 确定是否连接此节点
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_node_down">
+            <summary>
+            当前鼠标点下的 STNode
+            </summary>
+        </member>
+        <member name="F:ST.Library.UI.NodeEditor.STNodeEditor.m_mouse_in_control">
+            <summary>
+            当前鼠标是否位于控件中
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawGrid(ST.Library.UI.NodeEditor.DrawingTools,System.Int32,System.Int32)">
+            <summary>
+            当绘制背景网格线时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="nWidth">需要绘制宽度</param>
+            <param name="nHeight">需要绘制高度</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawNode(ST.Library.UI.NodeEditor.DrawingTools,System.Drawing.Rectangle)">
+            <summary>
+            当绘制 Node 时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="rect">可视画布区域大小</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawNodeBorder(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNode)">
+            <summary>
+            当绘制 Node 边框时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="node">目标node</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawConnectedLine(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当绘制已连接路径时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawMark(ST.Library.UI.NodeEditor.DrawingTools)">
+            <summary>
+            当绘制 Mark 详情信息时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawMagnet(ST.Library.UI.NodeEditor.DrawingTools,ST.Library.UI.NodeEditor.STNodeEditor.MagnetInfo)">
+            <summary>
+            当移动 Node 时候 需要显示对齐参考线时候发生
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="mi">匹配的磁铁信息</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawSelectedRectangle(ST.Library.UI.NodeEditor.DrawingTools,System.Drawing.RectangleF)">
+            <summary>
+            绘制选择的矩形区域
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="rectf">位于控件上的矩形区域</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawNodeOutLocation(ST.Library.UI.NodeEditor.DrawingTools,System.Drawing.Size,System.Collections.Generic.List{System.Drawing.Point})">
+            <summary>
+            绘制超出视觉区域的 Node 位置提示信息
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="sz">提示框边距</param>
+            <param name="lstPts">超出视觉区域的 Node 位置信息</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.OnDrawAlert(ST.Library.UI.NodeEditor.DrawingTools,System.Drawing.Rectangle,System.String,System.Drawing.Color,System.Drawing.Color,ST.Library.UI.NodeEditor.AlertLocation)">
+            <summary>
+            绘制提示信息
+            </summary>
+            <param name="dt">绘制工具</param>
+            <param name="rect">需要绘制区域</param>
+            <param name="strText">需要绘制文本</param>
+            <param name="foreColor">信息前景色</param>
+            <param name="backColor">信息背景色</param>
+            <param name="al">信息位置</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetAlertRectangle(System.Drawing.Graphics,System.String,ST.Library.UI.NodeEditor.AlertLocation)">
+            <summary>
+            获取提示信息需要绘制的矩形区域
+            </summary>
+            <param name="g">绘图表面</param>
+            <param name="strText">需要绘制文本</param>
+            <param name="al">信息位置</param>
+            <returns>矩形区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.FindNodeFromPoint(System.Drawing.PointF)">
+            <summary>
+            通过画布坐标进行寻找
+            </summary>
+            <param name="pt">画布中的坐标</param>
+            <returns>寻找到的数据</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetSelectedNode">
+            <summary>
+            获取已经被选择的 Node 集合
+            </summary>
+            <returns>Node 集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.CanvasToControl(System.Single,System.Boolean)">
+            <summary>
+            将画布坐标转换为控件坐标
+            </summary>
+            <param name="number">参数</param>
+            <param name="isX">是否为 X 坐标</param>
+            <returns>转换后的坐标</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.CanvasToControl(System.Drawing.PointF)">
+            <summary>
+            将画布坐标转换为控件坐标
+            </summary>
+            <param name="pt">坐标</param>
+            <returns>转换后的坐标</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.CanvasToControl(System.Drawing.Point)">
+            <summary>
+            将画布坐标转换为控件坐标
+            </summary>
+            <param name="pt">坐标</param>
+            <returns>转换后的坐标</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.CanvasToControl(System.Drawing.Rectangle)">
+            <summary>
+            将画布坐标转换为控件坐标
+            </summary>
+            <param name="rect">矩形区域</param>
+            <returns>转换后的矩形区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.CanvasToControl(System.Drawing.RectangleF)">
+            <summary>
+            将画布坐标转换为控件坐标
+            </summary>
+            <param name="rect">矩形区域</param>
+            <returns>转换后的矩形区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ControlToCanvas(System.Single,System.Boolean)">
+            <summary>
+            将控件坐标转换为画布坐标
+            </summary>
+            <param name="number">参数</param>
+            <param name="isX">是否为 X 坐标</param>
+            <returns>转换后的坐标</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ControlToCanvas(System.Drawing.Point)">
+            <summary>
+            将控件坐标转换为画布坐标
+            </summary>
+            <param name="pt">坐标</param>
+            <returns>转换后的坐标</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ControlToCanvas(System.Drawing.PointF)">
+            <summary>
+            将控件坐标转换为画布坐标
+            </summary>
+            <param name="pt">坐标</param>
+            <returns>转换后的坐标</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ControlToCanvas(System.Drawing.Rectangle)">
+            <summary>
+            将控件坐标转换为画布坐标
+            </summary>
+            <param name="rect">矩形区域</param>
+            <returns>转换后的区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ControlToCanvas(System.Drawing.RectangleF)">
+            <summary>
+            将控件坐标转换为画布坐标
+            </summary>
+            <param name="rect">矩形区域</param>
+            <returns>转换后的区域</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.MoveCanvas(System.Single,System.Single,System.Boolean,ST.Library.UI.NodeEditor.CanvasMoveArgs)">
+            <summary>
+            移动画布原点坐标到指定的控件坐标位置
+            当不存在 Node 时候 无法移动
+            </summary>
+            <param name="x">X 坐标</param>
+            <param name="y">Y 坐标</param>
+            <param name="bAnimation">移动过程中是否启动动画效果</param>
+            <param name="ma">指定需要修改的坐标参数</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ScaleCanvas(System.Single,System.Single,System.Single)">
+            <summary>
+            缩放画布
+            当不存在 Node 时候 无法缩放
+            </summary>
+            <param name="f">缩放比例</param>
+            <param name="x">缩放中心X位于控件上的坐标</param>
+            <param name="y">缩放中心Y位于控件上的坐标</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetConnectionInfo">
+            <summary>
+            获取当前已连接的 Option 对应关系
+            </summary>
+            <returns>连接信息集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.CanFindNodePath(ST.Library.UI.NodeEditor.STNode,ST.Library.UI.NodeEditor.STNode)">
+            <summary>
+            判断两个 Node 之间是否存在连接路径
+            </summary>
+            <param name="nodeStart">起始 Node</param>
+            <param name="nodeFind">目标 Node</param>
+            <returns>若存在路径返回true 否则false</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetCanvasImage(System.Drawing.Rectangle)">
+            <summary>
+            获取画布中指定矩形区域图像
+            </summary>
+            <param name="rect">画布中指定的矩形区域</param>
+            <returns>图像</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetCanvasImage(System.Drawing.Rectangle,System.Single)">
+            <summary>
+            获取画布中指定矩形区域图像
+            </summary>
+            <param name="rect">画布中指定的矩形区域</param>
+            <param name="fScale">缩放比例</param>
+            <returns>图像</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.SaveCanvas(System.String)">
+            <summary>
+            保存画布中的类容到文件中
+            </summary>
+            <param name="strFileName">文件路径</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.SaveCanvas(System.IO.Stream)">
+            <summary>
+            保存画布中的类容到数据流
+            </summary>
+            <param name="s">数据流对象</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetCanvasData">
+            <summary>
+            获取画布中内容二进制数据
+            </summary>
+            <returns>二进制数据</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.LoadAssembly(System.String[])">
+            <summary>
+            加载程序集
+            </summary>
+            <param name="strFiles">程序集集合</param>
+            <returns>存在STNode类型的文件的个数</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.LoadAssembly(System.String)">
+            <summary>
+            加载程序集
+            </summary>
+            <param name="strFile">指定需要加载的文件</param>
+            <returns>是否加载成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.GetTypes">
+            <summary>
+            获取当前编辑器中已加载的Node类型
+            </summary>
+            <returns>类型集合</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.LoadCanvas(System.String)">
+            <summary>
+            从文件中加载数据
+            注意: 此方法并不会清空画布中数据 而是数据叠加
+            </summary>
+            <param name="strFileName">文件路径</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.LoadCanvas(System.Byte[])">
+            <summary>
+            从二进制加载数据
+            注意: 此方法并不会清空画布中数据 而是数据叠加
+            </summary>
+            <param name="byData">二进制数据</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.LoadCanvas(System.IO.Stream)">
+            <summary>
+            从数据流中加载数据
+            注意: 此方法并不会清空画布中数据 而是数据叠加
+            </summary>
+            <param name="s">数据流对象</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ShowAlert(System.String,System.Drawing.Color,System.Drawing.Color)">
+            <summary>
+            在画布中显示提示信息
+            </summary>
+            <param name="strText">要显示的信息</param>
+            <param name="foreColor">信息前景色</param>
+            <param name="backColor">信息背景色</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ShowAlert(System.String,System.Drawing.Color,System.Drawing.Color,ST.Library.UI.NodeEditor.AlertLocation)">
+            <summary>
+            在画布中显示提示信息
+            </summary>
+            <param name="strText">要显示的信息</param>
+            <param name="foreColor">信息前景色</param>
+            <param name="backColor">信息背景色</param>
+            <param name="al">信息要显示的位置</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.ShowAlert(System.String,System.Drawing.Color,System.Drawing.Color,System.Int32,ST.Library.UI.NodeEditor.AlertLocation,System.Boolean)">
+            <summary>
+            在画布中显示提示信息
+            </summary>
+            <param name="strText">要显示的信息</param>
+            <param name="foreColor">信息前景色</param>
+            <param name="backColor">信息背景色</param>
+            <param name="nTime">信息持续时间</param>
+            <param name="al">信息要显示的位置</param>
+            <param name="bRedraw">是否立即重绘</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.SetActiveNode(ST.Library.UI.NodeEditor.STNode)">
+            <summary>
+            设置画布中活动的节点
+            </summary>
+            <param name="node">需要被设置为活动的节点</param>
+            <returns>设置前的活动节点</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.AddSelectedNode(ST.Library.UI.NodeEditor.STNode)">
+            <summary>
+            向画布中添加一个被选中的节点
+            </summary>
+            <param name="node">需要被选中的节点</param>
+            <returns>是否添加成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.RemoveSelectedNode(ST.Library.UI.NodeEditor.STNode)">
+            <summary>
+            向画布中移除一个被选中的节点
+            </summary>
+            <param name="node">需要被移除的节点</param>
+            <returns>是移除否成功</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.SetTypeColor(System.Type,System.Drawing.Color)">
+            <summary>
+            向编辑器中添加默认数据类型颜色
+            </summary>
+            <param name="t">数据类型</param>
+            <param name="clr">对应颜色</param>
+            <returns>被设置后的颜色</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeEditor.SetTypeColor(System.Type,System.Drawing.Color,System.Boolean)">
+            <summary>
+            向编辑器中添加默认数据类型颜色
+            </summary>
+            <param name="t">数据类型</param>
+            <param name="clr">对应颜色</param>
+            <param name="bReplace">若已经存在是否替换颜色</param>
+            <returns>被设置后的颜色</returns>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.CanvasOffsetX">
+            <summary>
+            获取画布原点相对于控件 X 方向上的偏移位置
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.CanvasOffsetY">
+            <summary>
+            获取画布原点相对于控件 Y 方向上的偏移位置
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.CanvasOffset">
+            <summary>
+            获取画布原点相对于控件偏移位置
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.CanvasValidBounds">
+            <summary>
+            获取画布中的有被用到的有效区域
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.CanvasScale">
+            <summary>
+            获取画布的缩放比例
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.Curvature">
+            <summary>
+            获取或设置 Option 之间连线的曲度
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.ShowMagnet">
+            <summary>
+            获取或设置移动画布中 Node 时候 是否启用磁铁效果
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.ShowBorder">
+            <summary>
+            获取或设置 移动画布中是否显示 Node 边框
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.ShowGrid">
+            <summary>
+            获取或设置画布中是否绘制背景网格线条
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.ShowLocation">
+            <summary>
+            获取或设置是否在画布边缘显示超出视角的 Node 位置信息
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.Nodes">
+            <summary>
+            获取画布中 Node 集合
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.ActiveNode">
+            <summary>
+            获取当前画布中被选中的活动 Node
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.HoverNode">
+            <summary>
+            获取当前画布中鼠标悬停的 Node
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.GridColor">
+            <summary>
+            获取或设置绘制画布背景时 网格线条颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.BorderColor">
+            <summary>
+            获取或设置画布中 Node 边框颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.BorderHoverColor">
+            <summary>
+            获取或设置画布中悬停 Node 边框颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.BorderSelectedColor">
+            <summary>
+            获取或设置画布中选中 Node 边框颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.BorderActiveColor">
+            <summary>
+            获取或设置画布中活动 Node 边框颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.MarkForeColor">
+            <summary>
+            获取或设置画布绘制 Node 标记详情采用的前景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.MarkBackColor">
+            <summary>
+            获取或设置画布绘制 Node 标记详情采用的背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.MagnetColor">
+            <summary>
+            获取或设置画布中移动 Node 时候 磁铁标记颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.SelectedRectangleColor">
+            <summary>
+            获取或设置画布中选择矩形区域的颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.HighLineColor">
+            <summary>
+            获取或设置画布中高亮连线的颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.LocationForeColor">
+            <summary>
+            获取或设置画布中边缘位置提示区域前景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.LocationBackColor">
+            <summary>
+            获取或设置画布中边缘位置提示区域背景色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.UnknownTypeColor">
+            <summary>
+            获取或设置画布中当 Node 中 Option 数据类型无法确定时应当使用的颜色
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeEditor.TypeColor">
+            <summary>
+            获取或设置画布中 Node 中 Option 数据类型预设颜色
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.ActiveChanged">
+            <summary>
+            活动的节点发生变化时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.SelectedChanged">
+            <summary>
+            选择的节点发生变化时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.HoverChanged">
+            <summary>
+            悬停的节点发生变化时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.NodeAdded">
+            <summary>
+            当节点被添加时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.NodeRemoved">
+            <summary>
+            当节点被移除时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.CanvasMoved">
+            <summary>
+            移动画布原点时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.CanvasScaled">
+            <summary>
+            缩放画布时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.OptionConnected">
+            <summary>
+            连接节点选项时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.OptionConnecting">
+            <summary>
+            正在连接节点选项时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.OptionDisConnected">
+            <summary>
+            断开节点选项时候发生
+            </summary>
+        </member>
+        <member name="E:ST.Library.UI.NodeEditor.STNodeEditor.OptionDisConnecting">
+            <summary>
+            正在断开节点选项时候发生
+            </summary>
+        </member>
+        <member name="T:ST.Library.UI.NodeEditor.STNodeAttribute">
+            <summary>
+            STNode节点特性
+            用于描述STNode开发者信息 以及部分行为
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeAttribute.#ctor(System.String)">
+            <summary>
+            构造一个STNode特性
+            </summary>
+            <param name="strPath">期望路径</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeAttribute.#ctor(System.String,System.String)">
+            <summary>
+            构造一个STNode特性
+            </summary>
+            <param name="strPath">期望路径</param>
+            <param name="strDescription">描述信息</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeAttribute.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            构造一个STNode特性
+            </summary>
+            <param name="strPath">期望路径</param>
+            <param name="strAuthor">STNode作者名称</param>
+            <param name="strMail">STNode作者邮箱</param>
+            <param name="strLink">STNode作者链接</param>
+            <param name="strDescription">STNode节点描述信息</param>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeAttribute.GetHelpMethod(System.Type)">
+            <summary>
+            获取类型的帮助函数
+            </summary>
+            <param name="stNodeType">节点类型</param>
+            <returns>函数信息</returns>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeAttribute.ShowHelp(System.Type)">
+            <summary>
+            执行对应节点类型的帮助函数
+            </summary>
+            <param name="stNodeType">节点类型</param>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeAttribute.Path">
+            <summary>
+            获取STNode节点期望在树形控件的路径
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeAttribute.Author">
+            <summary>
+            获取STNode节点的作者名称
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeAttribute.Mail">
+            <summary>
+            获取STNode节点的作者邮箱
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeAttribute.Link">
+            <summary>
+            获取STNode节点的作者链接
+            </summary>
+        </member>
+        <member name="P:ST.Library.UI.NodeEditor.STNodeAttribute.Description">
+            <summary>
+            获取STNode节点的描述信息
+            </summary>
+        </member>
+        <member name="M:ST.Library.UI.NodeEditor.STNodeCollection.EnsureSpace(System.Int32)">
+            <summary>
+            确认空间是否足够 空间不足扩大容量
+            </summary>
+            <param name="elements">需要增加的个数</param>
+        </member>
+    </members>
+</doc>
