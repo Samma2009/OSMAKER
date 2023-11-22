@@ -24,8 +24,8 @@ namespace osmaker
         IFirebaseConfig Fconfig = new FirebaseConfig
         {
 
-            AuthSecret = "fuqfHxK9z7Rwva72Ijfrf29Dkb8emPip57XDmfWE",
-            BasePath = "https://osmaker-93ff7-default-rtdb.firebaseio.com/",
+            AuthSecret = "",
+            BasePath = "",
 
         };
         IFirebaseClient Fclient;
